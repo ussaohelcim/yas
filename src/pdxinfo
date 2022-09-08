@@ -1,0 +1,8 @@
+name=Yas - Yet another shooter.
+author=ussaohelcim
+description=Simple stress test.
+bundleID=com.NILCO.Yas
+version=1.0.1
+imagePath=assets/cartridge/
+buildNumber=101
+

@@ -1,0 +1,14 @@
+{
+	"waves":[
+		[
+			{
+				"enemyType" : 0,
+				"enemyLife":5,
+				"speed":100
+			}
+		],
+		[
+
+		]
+	]
+}
