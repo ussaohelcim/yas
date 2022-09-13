@@ -1,0 +1,49 @@
+{
+	"waves":[
+		[
+			{
+				"enemyType" : 3,
+				"enemyLife": 5,
+				"speed": 300
+			},
+			{
+				"enemyType" : 3,
+				"enemyLife": 5,
+				"speed": 300
+			},{
+				"enemyType" : 4,
+				"enemyLife": 7,
+				"speed": 300
+			},
+			{
+				"enemyType" : 4,
+				"enemyLife": 7,
+				"speed": 300
+			}
+		],
+		[
+			{
+				"enemyType" : 3,
+				"enemyLife": 5,
+				"speed": 300
+			},{
+				"enemyType" : 3,
+				"enemyLife": 5,
+				"speed": 300
+			},
+			{
+				"enemyType" : 1,
+				"enemyLife": 7,
+				"speed": 100
+			},{
+				"enemyType" : 1,
+				"enemyLife": 7,
+				"speed": 100
+			},{
+				"enemyType" : 1,
+				"enemyLife": 7,
+				"speed": 100
+			}
+		]
+	]
+}

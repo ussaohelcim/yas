@@ -1,0 +1,34 @@
+{
+	"waves":[
+		[
+			{
+				"enemyType" : 0,
+				"enemyLife": 20,
+				"speed": 300,
+				"x":200,
+				"y":120
+			}
+		],
+		[
+			{
+				"enemyType" : 0,
+				"enemyLife": 30,
+				"speed": 300
+			},
+			{
+				"enemyType" : 0,
+				"enemyLife": 30,
+				"speed": 300
+			}
+		],
+		[
+			{
+				"enemyType" : 0,
+				"enemyLife": 50,
+				"speed": 300,
+				"x":200,
+				"y":120
+			}
+		]
+	]
+}
