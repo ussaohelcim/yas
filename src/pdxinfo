@@ -1,8 +1,8 @@
 name=Yas - Yet another shooter.
 author=ussaohelcim
-description=Simple stress test.
+description=KILL THEM ALL, PLEASE!.
 bundleID=com.NILCO.Yas
-version=1.0.1
+version=1.0.0
 imagePath=assets/cartridge/
-buildNumber=101
+buildNumber=100
 

@@ -1,7 +1,3 @@
---TODO criar um editor de waves interativo
---FIXME Criar nova musica para cinematic inicio de nivel
---TODO implementar o fim de jogo(vitoria)
-
 local newLevelSound = playdate.sound.sampleplayer.new("assets/sounds/highscore.wav")
 
 local tokill = {
@@ -13,7 +9,9 @@ local tokill = {
 	playdate.graphics.image.new("assets/images/toKill5")
 }
 
-local endGameSprite = playdate.graphics.image.new("assets/images/theEnd")
+local thatWasEasy = playdate.sound.sampleplayer.new("assets/sounds/thatWasEasy.wav")
+local thatWasHard = playdate.sound.sampleplayer.new("assets/sounds/thatWasHard.wav")
+local itsTimeToKill = playdate.sound.sampleplayer.new("assets/sounds/itsTimeToKil.wav")
 
 local function CreateLevel()
 	local self = {}
@@ -23,7 +21,7 @@ local function CreateLevel()
 	self.callbackCalled = false
 
 	function self.addWave(enemyList)
-		self.waves[#self.waves+1] = enemyList
+		self.waves[#self.waves + 1] = enemyList
 	end
 
 	function self.addEndlevelCallback(callback)
@@ -31,21 +29,24 @@ local function CreateLevel()
 	end
 
 	function self.nextWave()
-		
 		if self.waveNumber <= #self.waves then
 			local list = self.waves[self.waveNumber]
+			print("starting wave", self.waveNumber)
 			for i = 1, #list, 1 do
 				local e = list[i]
+				-- TODO spawnar os inimigos em quadrantes separados do retangulo da tela, isso vai impossibilitar do jogador escolher um local para prender todos os inimigos no angulo de tiro
 				CreateEnemy(
-					e.x or math.random(0,400), e.y or math.random(0,240),
-					e.enemyType,e.enemyLife,e.speed,e.r
+					e.x or math.random(0, 400), e.y or math.random(0, 240),
+					e.enemyType,
+					e.enemyLife,
+					e.speed,
+					e.r
 				)
 			end
 
 			self.waveNumber = self.waveNumber + 1
 		else
 			self.finished = true
-			
 		end
 	end
 
@@ -55,7 +56,9 @@ local function CreateLevel()
 		end
 
 		if self.finished and (not self.callbackCalled) then
-			AddTimedFunction(self.endLevelCallback,3,false)
+			-- print("vai acionar o endLevelCallback")
+			self.finished = false
+			AddTimedFunction(self.endLevelCallback, 3, false)
 			-- self.endLevelCallback()
 			self.callbackCalled = true
 		end
@@ -64,257 +67,134 @@ local function CreateLevel()
 	return self
 end
 
+local function LevelFromJson(jsonPath)
+	local j = json.decodeFile(jsonPath)
+
+	local level = CreateLevel()
+	for i = 1, #j.waves, 1 do
+		level.addWave(j.waves[i])
+	end
+
+	return level
+end
+
 CurrentLevel = nil
 LevelNumber = 1
-
-function ChangeToNextLevel()
-	
-end
 
 function StartLevel()
 	local l = 0
 
 	if PLAYER ~= nil then
-		
-		l = PLAYER.life + math.floor(PLAYER.life * 0.5)
-
-		if l > PLAYER.maxLife then
-			PLAYER.maxLife = l
-		end
+		l = PLAYER.life
 	end
 
 	PLAYER = Player()
 
 	if l ~= 0 then
-		PLAYER.life = l 
-		
+		PLAYER.life = l
 	end
-
-	CurrentLevel = LevelsList[LevelNumber]
+	print("iniciando nivel", LevelNumber)
+	-- print("em jogo")
 	CurrentLevel.addEndlevelCallback(NextLevel)
 
 	playdate.update = GameScreen
 
-	
-	
-	print("botou o gamescreen no update")
 end
 
 function NextLevel()
 	LevelNumber = LevelNumber + 1
 
-	-- if CurrentLevel ~= nil then
-		
-	-- else
-	-- 	local c = Cinematic(
-	-- 		{
-	-- 			{
-	-- 				image = endGameSprite,
-	-- 				--TODO adicionar musica fim do jogo
-	-- 				--TODO criar imagens dos creditos
-	-- 			}
-	-- 		},NewGame
-	-- 	)
+	local s = nil
 
-	-- 	playdate.update = c.update
-	-- end
-
-	
-
-	local c = Cinematic(
-		{
-			{
-				image = tokill[LevelNumber],
-				sound = newLevelSound
-			}
+	if PLAYER == nil then
+		s = {
+			image = tokill[LevelNumber - 1] or tokill[LevelNumber],
 		}
-		, StartLevel
-	)
+	else
+		s = {
+			image = tokill[LevelNumber - 1] or tokill[LevelNumber],
+			-- sound = math.iff(PLAYER.life > PLAYER.maxLife * 0.5, thatWasEasy, thatWasHard)
+		}
+	end
 
-	playdate.update = c.update
+	CurrentLevel = LevelsList[LevelNumber]
 
+	if CurrentLevel == nil then
+		--TELA de vitoria
+		local endGameCinematic = Cinematic(
+			{
+				{
+					image = playdate.graphics.image.new("assets/images/toKill5")
+				},
+				{
+					image = playdate.graphics.image.new("assets/images/final1")
+					-- TODO add audio "its done"
+				},
+				{
+					image = playdate.graphics.image.new("assets/images/final2")
+				},
+				{
+					image = playdate.graphics.image.new("assets/images/final")
+				}
+
+			}, (function()
+				print("era pra ter chamado o menu")
+				MainMenu()
+			end)
+		)
+		playdate.update = endGameCinematic.update
+	else
+		local c =
+		Cinematic(
+			{
+				-- s,
+				{
+					image = tokill[LevelNumber],
+					sound = itsTimeToKill
+				}
+			},
+			StartLevel
+		)
+
+		playdate.update = c.update
+	end
 end
-
-
 
 local enemyTypes = {
 	follower = 1,
 	turret = 2,
 	dumbWithTurret = 3,
-	dumbs= 4,
+	dumbs = 4,
+	spawner = 0
 }
-
-
---#region level 1
-
-Level1 = CreateLevel()
-
-Level1.addWave(
-	{
-		{
-			enemyType = enemyTypes.dumbs,
-			enemyLife = 1,
-			speed = 50,
-		},
-		{
-			enemyType = enemyTypes.dumbs,
-			enemyLife = 1,
-			speed = 50,
-		},
-	}
-)
-
-Level1.addWave(
-	{
-		{
-			enemyType = enemyTypes.dumbs,
-			enemyLife = 3,
-			speed = 100,
-		},
-		{
-			enemyType = enemyTypes.dumbs,
-			enemyLife = 3,
-			speed = 100,
-		},
-		{
-			enemyType = enemyTypes.dumbs,
-			enemyLife = 3,
-			speed = 100,
-		},
-	}
-)
-
--- Level1.addWave(
--- 	{
--- 		{
--- 			enemyType = enemyTypes.dumbs,
--- 			enemyLife = 3,
--- 			speed = 100,
--- 		},
--- 		{
--- 			enemyType = enemyTypes.dumbs,
--- 			enemyLife = 3,
--- 			speed = 100,
--- 		},
--- 		{
--- 			enemyType = enemyTypes.follower,
--- 			enemyLife = 5,
--- 			speed = 50,
--- 		},
--- 		{
--- 			enemyType = enemyTypes.follower,
--- 			enemyLife = 5,
--- 			speed = 50,
--- 		},
--- 	}
--- )
-
--- Level1.addWave(
--- 	{
--- 		{
--- 			enemyType = enemyTypes.follower,
--- 			enemyLife = 5,
--- 			speed = 50,
--- 		},{
--- 			enemyType = enemyTypes.follower,
--- 			enemyLife = 5,
--- 			speed = 50,
--- 		},{
--- 			enemyType = enemyTypes.follower,
--- 			enemyLife = 5,
--- 			speed = 50,
--- 		},
--- 		{
--- 			enemyType = enemyTypes.dumbs,
--- 			enemyLife = 9,
--- 			speed = 300,
--- 		},
--- 		{
--- 			enemyType = enemyTypes.dumbs,
--- 			enemyLife = 9,
--- 			speed = 300,
--- 		},
--- 	}
--- )
-
--- Level1.addWave(
--- 	{
--- 		{
--- 			enemyType = enemyTypes.follower,
--- 			enemyLife = 1,
--- 			speed = 100,
--- 		},{
--- 			enemyType = enemyTypes.follower,
--- 			enemyLife = 1,
--- 			speed = 100,
--- 		},{
--- 			enemyType = enemyTypes.follower,
--- 			enemyLife = 1,
--- 			speed = 100,
--- 		},{
--- 			enemyType = enemyTypes.follower,
--- 			enemyLife = 1,
--- 			speed = 100,
--- 		},{
--- 			enemyType = enemyTypes.follower,
--- 			enemyLife = 1,
--- 			speed = 100,
--- 		},{
--- 			enemyType = enemyTypes.follower,
--- 			enemyLife = 1,
--- 			speed = 100,
--- 		},
--- 	}
--- )
-
-Level1.addEndlevelCallback(	function ()
-	
-	NextLevel()
-end )
-
---#endregion
-
-
---#region level2
-
-Level2 = CreateLevel()
-
-Level2.addWave(
-	{
-		{
-			enemyType = enemyTypes.dumbs,
-			enemyLife = 9,
-			speed = 300,
-		},
-		{
-			enemyType = enemyTypes.dumbs,
-			enemyLife = 9,
-			speed = 300,
-		},
-		{
-			enemyType = enemyTypes.turret,
-			enemyLife = 9,
-			speed = 1,
-		},
-		{
-			enemyType = enemyTypes.turret,
-			enemyLife = 9,
-			speed = 1,
-		},
-		{
-			enemyType = enemyTypes.turret,
-			enemyLife = 9,
-			speed = 1,
-		}
-	}
-)
-
---#endregion
-
 
 LevelNumber = 0
 
+function RefreshLevels()
+	for i = 1, #LevelsList, 1 do
+		LevelsList[i].waveNumber = 1
+		LevelsList[i].callbackCalled = false
+		LevelsList[i].finished = false
+	end
+end
+
 LevelsList = {
-	Level1,
-	Level2
+	-- LevelFromJson("assets/levels/level1.json"),
+	-- LevelFromJson("assets/levels/level2.json"),
+	-- LevelFromJson("assets/levels/level3.json"),
+	-- LevelFromJson("assets/levels/level4.json"), --FIXME too much hard
+	LevelFromJson("assets/levels/level5.json") -- FIXME too much easy and boring
 }
+
+--TODO increase all enemies lifes
+
+--playtest 1
+--level 1 30 segundos
+--level 2 20 segundos
+--level 3 15 segundos
+
+--playtest 2
+--level 1 25 segundos
+
+--playtest 3
+--level 1 25 segundos

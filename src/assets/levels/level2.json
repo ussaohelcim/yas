@@ -32,12 +32,12 @@
 			},
 			{
 				"enemyType" : 4,
-				"enemyLife": 3,
+				"enemyLife": 8,
 				"speed": 200
 			},
 			{
 				"enemyType" : 4,
-				"enemyLife": 3,
+				"enemyLife": 5,
 				"speed": 200
 			}
 		],
@@ -49,7 +49,7 @@
 			},
 			{
 				"enemyType" : 4,
-				"enemyLife": 5,
+				"enemyLife": 8,
 				"speed": 200
 			},
 			{

@@ -3,23 +3,23 @@
 		[
 			{
 				"enemyType" : 1,
-				"enemyLife": 3,
+				"enemyLife": 5,
 				"speed": 50
 			},
 			{
 				"enemyType" : 1,
-				"enemyLife": 3,
+				"enemyLife": 5,
 				"speed": 50
 			},
 			{
 				"enemyType" : 4,
-				"enemyLife": 3,
-				"speed": 200
+				"enemyLife": 8,
+				"speed": 150
 			},
 			{
 				"enemyType" : 4,
-				"enemyLife": 3,
-				"speed": 200
+				"enemyLife": 8,
+				"speed": 150
 			}
 		],
 		[
@@ -34,13 +34,35 @@
 				"speed": 50
 			},
 			{
-				"enemyType" : 1,
+				"enemyType" : 2,
 				"enemyLife": 5,
 				"speed": 50
 			},
 			{
 				"enemyType" : 4,
-				"enemyLife": 3,
+				"enemyLife": 8,
+				"speed": 200
+			}
+		],
+		[
+			{
+				"enemyType" : 2,
+				"enemyLife": 5,
+				"speed": 50
+			},
+			{
+				"enemyType" : 2,
+				"enemyLife": 5,
+				"speed": 50
+			},
+			{
+				"enemyType" : 2,
+				"enemyLife": 5,
+				"speed": 50
+			},
+			{
+				"enemyType" : 4,
+				"enemyLife": 8,
 				"speed": 200
 			}
 		]

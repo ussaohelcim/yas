@@ -4,45 +4,51 @@
 			{
 				"enemyType" : 3,
 				"enemyLife": 5,
-				"speed": 300
-			},
-			{
-				"enemyType" : 3,
-				"enemyLife": 5,
-				"speed": 300
-			},{
-				"enemyType" : 4,
-				"enemyLife": 7,
-				"speed": 300
+				"speed": 100
 			},
 			{
 				"enemyType" : 4,
 				"enemyLife": 7,
-				"speed": 300
+				"speed": 150
+			},
+			{
+				"enemyType" : 4,
+				"enemyLife": 7,
+				"speed": 190
+			}
+		],
+		[
+			{
+				"enemyType" : 4,
+				"enemyLife": 10,
+				"speed": 100
+			},
+			{
+				"enemyType" : 2,
+				"enemyLife": 10,
+				"speed": 100
+			},
+			{
+				"enemyType" : 2,
+				"enemyLife": 10,
+				"speed": 100
 			}
 		],
 		[
 			{
 				"enemyType" : 3,
-				"enemyLife": 5,
-				"speed": 300
-			},{
-				"enemyType" : 3,
-				"enemyLife": 5,
-				"speed": 300
+				"enemyLife": 10,
+				"speed": 150
+			},
+			{
+				"enemyType" : 4,
+				"enemyLife": 7,
+				"speed": 100
 			},
 			{
 				"enemyType" : 1,
-				"enemyLife": 7,
-				"speed": 100
-			},{
-				"enemyType" : 1,
-				"enemyLife": 7,
-				"speed": 100
-			},{
-				"enemyType" : 1,
-				"enemyLife": 7,
-				"speed": 100
+				"enemyLife": 20,
+				"speed": 80
 			}
 		]
 	]

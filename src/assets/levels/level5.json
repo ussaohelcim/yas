@@ -7,6 +7,16 @@
 				"speed": 300,
 				"x":200,
 				"y":120
+			},
+			{
+				"enemyType" : 4,
+				"enemyLife": 30,
+				"speed": 300
+			},
+			{
+				"enemyType" : 4,
+				"enemyLife": 30,
+				"speed": 100
 			}
 		],
 		[
@@ -19,6 +29,11 @@
 				"enemyType" : 0,
 				"enemyLife": 30,
 				"speed": 300
+			},
+			{
+				"enemyType" : 2,
+				"enemyLife": 10,
+				"speed": 300
 			}
 		],
 		[
@@ -28,6 +43,11 @@
 				"speed": 300,
 				"x":200,
 				"y":120
+			},
+			{
+				"enemyType" : 3,
+				"enemyLife": 100,
+				"speed": 100
 			}
 		]
 	]

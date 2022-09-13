@@ -1,21 +1,20 @@
+-- function MainMenu(newGameCallback)
+-- 	local self = {}
 
-function MainMenu(newGameCallback)
-	local self = {}
+-- 	self.m = UIRow(10, 0)
 
-	self.m = UIRow(10, 0)
+-- 	self.m.addItem("new game", newGameCallback)
+-- 	self.m.addItem("achievements",AchievementsScreen)
 
-	self.m.addItem("new game", newGameCallback)
-	self.m.addItem("achievements",AchievementsScreen)
+-- 	function self.updateCallback()
+-- 		playdate.graphics.clear()
+-- 		self.m.update()
+-- 		self.m.draw()
+-- 	end
 
-	function self.updateCallback()
-		playdate.graphics.clear()
-		self.m.update()
-		self.m.draw()
-	end
+-- 	return self
 
-	return self
-	
-end
+-- end
 
 -- function UICollumn(x,y,w,h)
 -- 	local self = {}
@@ -33,14 +32,14 @@ end
 
 -- 	function self.draw()
 -- 		local lastX = self.x
-		
+
 -- 		for i = 1, #self.items, 1 do
 
 -- 			local txt = self.items[i].txt
 -- 			local width, height = playdate.graphics.getTextSize(txt)
 
 -- 			-- playdate.graphics.drawRect(0,0,100,100)
-			
+
 
 -- 			playdate.graphics.drawText(txt, self.x, lastX)
 
@@ -48,7 +47,7 @@ end
 -- 			-- 	playdate.graphics.drawText(" Ⓐ", self.x + w, lastX)
 -- 			-- end
 -- 			-- playdate.graphics.drawCircleAtPoint(self.x,lastY,5)
-			
+
 
 -- 			lastX = lastX + width
 -- 		end
@@ -59,7 +58,7 @@ end
 -- 			self.select(-1)
 -- 		elseif playdate.buttonJustPressed("down") then
 -- 			self.select(1)
-		
+
 -- 		end
 
 -- 		if playdate.buttonJustPressed("a") then
@@ -101,15 +100,15 @@ end
 -- 	local self = {}
 
 -- 	function self.add()
-		
+
 -- 	end
 
 -- 	function self.addRow(txt,callback)
-		
+
 -- 	end
 
 -- 	function self.addCollumn(txt,callback)
-		
+
 -- 	end
 -- 	--x position
 -- 	--y position
