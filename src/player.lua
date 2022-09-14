@@ -20,6 +20,9 @@ local playerImage = playdate.graphics.image.new("assets/images/player")
 local sfxHURT = playdate.sound.sampleplayer.new("assets/sounds/death.wav")
 local sfxBullet = playdate.sound.sampleplayer.new("assets/sounds/shoot.wav")
 
+local sfxDash = playdate.sound.sampleplayer.new("assets/sounds/dash.wav")
+
+sfxDash:setVolume(0.3)
 sfxBullet:setVolume(0.3)
 
 local lowLifeSound = playdate.sound.sampleplayer.new("assets/sounds/lowLife.wav")
@@ -297,10 +300,14 @@ function Player()
 
 			self.x = self.x + (tempVector.x * self.speed * dt) --
 			self.y = self.y + (tempVector.y * self.speed * dt) --
+			-- else
+			-- 	self.aimAngle = math.rad(playdate.getCrankPosition() - 90)
 		end
 
 		self.dashCooldown = self.dashCooldown - dt
 		if dash and self.dashCooldown < 0 then
+
+			sfxDash:play(1)
 
 			self.dashCooldown = self.dashCooldownMax
 			AddHitParticle(self.x, self.y)
@@ -317,6 +324,7 @@ function Player()
 
 			if checkCollisionCircles(self.x, self.y, self.r, weaponBox.x, weaponBox.y, weaponBox.r) then
 				self.weapon = weaponBox.weapon
+				--TODO add music when get new weapon
 
 				weaponBox.enabled = false
 			end

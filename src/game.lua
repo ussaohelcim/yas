@@ -32,13 +32,25 @@ playdate.graphics.popContext()
 playdate.graphics.setColor(playdate.graphics.kColorClear)
 
 function NewGame()
-	PLAYER = nil
+	-- collectgarbage("stop")
+
+	collectgarbage("collect")
+
+	DisableAllBullets()
+
+	print("new game", collectgarbage("count"))
+	PLAYER = Player()
 
 	LevelNumber = 0
 	showedGameOver = false
+	print("created player", collectgarbage("count"))
+
 	KillAllEnemies()
+	print("disabled all enemies", collectgarbage("count"))
 	RefreshLevels()
+	print("levels refreshed", collectgarbage("count"))
 	NextLevel()
+	print("next level", collectgarbage("count"))
 end
 
 function GameOverScreen()

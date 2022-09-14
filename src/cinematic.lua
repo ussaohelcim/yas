@@ -77,9 +77,9 @@ function Cinematic(sceneList, endCallback)
 
 	function self.update()
 		self.draw()
-		if playdate.buttonJustPressed("a") or playdate.buttonJustPressed("right") then
+		if playdate.buttonJustPressed("a") then
 			self.nextScene()
-		elseif playdate.buttonJustPressed("b") or playdate.buttonJustPressed("left") then
+		elseif playdate.buttonJustPressed("b") then
 			self.previousScene()
 		end
 	end

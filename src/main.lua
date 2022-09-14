@@ -37,18 +37,16 @@ function MainMenu()
 		NewGame
 	)
 
-	print("ta no menu")
+	print("on menu", collectgarbage("count"))
 
 	playdate.update = cinematic.update
 end
 
-print("testing level5 with turretDumb as the last enemy")
+print("testing memory leak on new game")
 
 MainMenu()
 
 --🟨 ⊙ 🔒 🎣 ✛ ⬆️ ➡️ ⬇️ ⬅️
-
--- MUSICAS && sons
 
 -- musica diferente em cada nivel? talvez 2 ou 3 diferentes
 
@@ -58,18 +56,8 @@ MainMenu()
 -- (barulho de riscando) damn, that was hard
 -- its my pleasure (?)
 
--- FIXME tiros muito rapidos?
--- FIXME turret normal não é usado nenhuma vez
--- TODO arrumar uma maneira de não deixar o jogador ganhar parado
--- FIXME 2 dumbturrets é MUITO DIFICIL
--- FIXME diminuir tempo de spawn
--- TODO criar novo
-
--- TODO criar caixas de armas
--- TODO caixa aleatoria?
--- TODO criar sprites para as caixas de armas
--- TODO spawnar caixa de arma no final das fases
+-- TODO criar sprites para a caixa de arma
 
 -- FIXME utilizar funcoes locais todo onde
 
--- FIXME aparentemente, sempre que reinicia o jogo aloca mais memoria
+-- FIXME aparentemente, sempre que reinicia o jogo aloca mais memoria (acho que so ocorre com o malloc log ligado)

@@ -28,6 +28,13 @@ function CreateBullet(type, x, y, angle, speed, size, isEnemy)
 
 end
 
+function DisableAllBullets()
+	for i = 1, #BulletList, 1 do
+		local b = BulletList[i]
+		b.enabled = false
+	end
+end
+
 local function checkCollisionCircleRect(center, rec)
 	local collision = false
 
@@ -102,5 +109,3 @@ function UpdateBullets(dt, player)
 		end
 	end
 end
-
---FIXME balas ainda existem quando jogador morre

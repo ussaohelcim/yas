@@ -313,13 +313,14 @@ function UpdateEnemies(player, dt)
 				drawEnemy(e, followerImage, dt)
 
 				HandleCollisionWithPlayer(e, player)
-				-- if checkCollisionCircles(
-				-- 	player.x,player.y,player.r,e.x,e.y,e.r
-				-- ) then
-				-- 	player.takeDamage(1)
-				-- end
 
 				handleEnemyHit(e)
+				if e.life <= 0 then
+					CreateBullet(0, e.x, e.y, 0, 200, 8, true)
+					CreateBullet(0, e.x, e.y, math.rad(90), 200, 8, true)
+					CreateBullet(0, e.x, e.y, math.rad(180), 200, 8, true)
+					CreateBullet(0, e.x, e.y, math.rad(-90), 200, 8, true)
+				end
 			end
 		end
 	end
@@ -376,7 +377,7 @@ end
 
 ---comment
 ---@param e table needs x,y,r
----@param player any
+---@param player table
 function HandleCollisionWithPlayer(e, player)
 	if checkCollisionCircles(player.x, player.y, player.r, e.x, e.y, e.r) then
 		player.takeDamage(1)
@@ -393,7 +394,7 @@ function KillAllEnemies()
 		end
 	end
 
-	print("inimigos:", enemiesList.aliveCount)
+	print("enemies:", enemiesList.aliveCount)
 
 	local turrets = enemiesList.turrets
 	local followers = enemiesList.followers
@@ -404,51 +405,31 @@ function KillAllEnemies()
 	for i = 1, #spawners, 1 do
 		local e = spawners[i]
 		disableEnemy(e)
-		-- if e.life > 0 then
-		-- 	e.enabled = false
-		-- 	e.life = 0
-		-- 	enemiesList.aliveCount = enemiesList.aliveCount - 1
-		-- end
+
 	end
 
 	for i = 1, #dumbies, 1 do
 		local e = dumbies[i]
 		disableEnemy(e)
-		-- if e.life > 0 then
-		-- 	e.enabled = false
-		-- 	e.life = 0
-		-- 	enemiesList.aliveCount = enemiesList.aliveCount - 1
-		-- end
+
 	end
 	for i = 1, #turrets, 1 do
 		local e = turrets[i]
 		disableEnemy(e)
-		-- if e.life > 0 then
-		-- 	e.enabled = false
-		-- 	e.life = 0
-		-- 	enemiesList.aliveCount = enemiesList.aliveCount - 1
-		-- end
+
 	end
 	for i = 1, #followers, 1 do
 		local e = followers[i]
 		disableEnemy(e)
-		-- if e.life > 0 then
-		-- 	e.enabled = false
-		-- 	e.life = 0
-		-- 	enemiesList.aliveCount = enemiesList.aliveCount - 1
-		-- end
+
 	end
 	for i = 1, #dumbsWithTurrets, 1 do
 		local e = dumbsWithTurrets[i]
 		disableEnemy(e)
-		-- if e.life > 0 then
-		-- 	e.enabled = false
-		-- 	e.life = 0
-		-- 	enemiesList.aliveCount = enemiesList.aliveCount - 1
-		-- end
+
 	end
 
-	print("inimigos:", enemiesList.aliveCount)
+	print("enemies:", enemiesList.aliveCount)
 end
 
---TODO follower spawnar followers mais fracos
+--TODO add shoot sound to enemies

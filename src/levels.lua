@@ -56,15 +56,10 @@ local function CreateLevel()
 		end
 
 		if self.finished and (not self.callbackCalled) then
-			--TODO ? melhorar a arma do jogador?
-			--TODO ? melhorar o dash do jogador?
-			--TODO spawnar caixa de arma aleatoria
 			SpawnWeaponBox()
 
-			-- print("vai acionar o endLevelCallback")
 			self.finished = false
 			AddTimedFunction(self.endLevelCallback, 5, false)
-			-- self.endLevelCallback()
 			self.callbackCalled = true
 		end
 	end
@@ -88,6 +83,7 @@ LevelNumber = 1
 
 function StartLevel()
 	DisableWeaponBox()
+
 	local l = 0
 	local w = nil
 
@@ -96,7 +92,7 @@ function StartLevel()
 		w = PLAYER.weapon
 	end
 
-	PLAYER = Player()
+	-- PLAYER = Player()
 	if w ~= nil then
 
 		PLAYER.weapon = w
@@ -105,7 +101,7 @@ function StartLevel()
 	if l ~= 0 then
 		PLAYER.life = l
 	end
-	print("iniciando nivel", LevelNumber)
+	print("starting level", LevelNumber)
 	-- print("em jogo")
 	CurrentLevel.addEndlevelCallback(NextLevel)
 
@@ -115,19 +111,6 @@ end
 
 function NextLevel()
 	LevelNumber = LevelNumber + 1
-
-	local s = nil
-
-	if PLAYER == nil then
-		s = {
-			image = tokill[LevelNumber - 1] or tokill[LevelNumber],
-		}
-	else
-		s = {
-			image = tokill[LevelNumber - 1] or tokill[LevelNumber],
-			-- sound = math.iff(PLAYER.life > PLAYER.maxLife * 0.5, thatWasEasy, thatWasHard)
-		}
-	end
 
 	CurrentLevel = LevelsList[LevelNumber]
 
@@ -159,7 +142,6 @@ function NextLevel()
 		local c =
 		Cinematic(
 			{
-				-- s,
 				{
 					image = tokill[LevelNumber],
 					sound = itsTimeToKill
@@ -195,18 +177,5 @@ LevelsList = {
 	LevelFromJson("assets/levels/level2.json"),
 	LevelFromJson("assets/levels/level3.json"),
 	LevelFromJson("assets/levels/level4.json"), --FIXME too much hard
-	LevelFromJson("assets/levels/level5.json") -- FIXME too much easy and boring
+	LevelFromJson("assets/levels/level5.json")
 }
-
---TODO increase all enemies lifes
-
---playtest 1
---level 1 30 segundos
---level 2 20 segundos
---level 3 15 segundos
-
---playtest 2
---level 1 25 segundos
-
---playtest 3
---level 1 25 segundos
