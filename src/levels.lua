@@ -56,9 +56,14 @@ local function CreateLevel()
 		end
 
 		if self.finished and (not self.callbackCalled) then
+			--TODO ? melhorar a arma do jogador?
+			--TODO ? melhorar o dash do jogador?
+			--TODO spawnar caixa de arma aleatoria
+			SpawnWeaponBox()
+
 			-- print("vai acionar o endLevelCallback")
 			self.finished = false
-			AddTimedFunction(self.endLevelCallback, 3, false)
+			AddTimedFunction(self.endLevelCallback, 5, false)
 			-- self.endLevelCallback()
 			self.callbackCalled = true
 		end
@@ -82,13 +87,20 @@ CurrentLevel = nil
 LevelNumber = 1
 
 function StartLevel()
+	DisableWeaponBox()
 	local l = 0
+	local w = nil
 
 	if PLAYER ~= nil then
 		l = PLAYER.life
+		w = PLAYER.weapon
 	end
 
 	PLAYER = Player()
+	if w ~= nil then
+
+		PLAYER.weapon = w
+	end
 
 	if l ~= 0 then
 		PLAYER.life = l
@@ -179,10 +191,10 @@ function RefreshLevels()
 end
 
 LevelsList = {
-	-- LevelFromJson("assets/levels/level1.json"),
-	-- LevelFromJson("assets/levels/level2.json"),
-	-- LevelFromJson("assets/levels/level3.json"),
-	-- LevelFromJson("assets/levels/level4.json"), --FIXME too much hard
+	LevelFromJson("assets/levels/level1.json"),
+	LevelFromJson("assets/levels/level2.json"),
+	LevelFromJson("assets/levels/level3.json"),
+	LevelFromJson("assets/levels/level4.json"), --FIXME too much hard
 	LevelFromJson("assets/levels/level5.json") -- FIXME too much easy and boring
 }
 

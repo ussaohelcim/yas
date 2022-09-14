@@ -65,5 +65,11 @@ MainMenu()
 -- FIXME diminuir tempo de spawn
 -- TODO criar novo
 
--- TODO adicionar novas armas?
--- TODO adicionar dash
+-- TODO criar caixas de armas
+-- TODO caixa aleatoria?
+-- TODO criar sprites para as caixas de armas
+-- TODO spawnar caixa de arma no final das fases
+
+-- FIXME utilizar funcoes locais todo onde
+
+-- FIXME aparentemente, sempre que reinicia o jogo aloca mais memoria

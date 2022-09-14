@@ -9,12 +9,12 @@ local objectPoolingTemplate = ObjectPooling
 
 BulletList = {} --circle bullets [i]x,y,angle,speed,r,type,enabled
 local laserList = {} --line bullets
-local screen = {x=0,y=0,w=400,h=240}
+local screen = { x = 0, y = 0, w = 400, h = 240 }
 
 local bulletEnemy = playdate.graphics.image.new("assets/images/bulletEnemy")
 local bulletPlayer = playdate.graphics.image.new("assets/images/bulletPlayer")
 
-function CreateBullet(type, x,y, angle, speed, size, isEnemy)
+function CreateBullet(type, x, y, angle, speed, size, isEnemy)
 
 	objectPoolingTemplate(BulletList, {
 		enabled = true,
@@ -22,45 +22,43 @@ function CreateBullet(type, x,y, angle, speed, size, isEnemy)
 		y = y,
 		angle = angle or (random() * (math.TAU)),
 		speed = speed,
-		r = 8,
+		r = size or 8,
 		isEnemy = isEnemy
 	})
 
 end
 
-
-local function checkCollisionCircleRect(center,rec)
+local function checkCollisionCircleRect(center, rec)
 	local collision = false
 
-	local recCenterX = (rec.x + rec.w/2);
-	local recCenterY = (rec.y + rec.h/2);
+	local recCenterX = (rec.x + rec.w / 2);
+	local recCenterY = (rec.y + rec.h / 2);
 
 	local dx = abs(center.x - recCenterX);
 	local dy = abs(center.y - recCenterY);
 
-	if (dx > (rec.w/2 + center.r)) then
+	if (dx > (rec.w / 2 + center.r)) then
 		return false
-	end 
+	end
 
-	if (dy > (rec.h/2 + center.r)) then
+	if (dy > (rec.h / 2 + center.r)) then
 		return false
-	end 
+	end
 
-	if (dx <= (rec.w/2)) then
+	if (dx <= (rec.w / 2)) then
 		return true
-	end 
-	if (dy <= (rec.h/2)) then
+	end
+	if (dy <= (rec.h / 2)) then
 		return true
-	end 
+	end
 
-	local cornerDistanceSq = (dx - rec.w/2)*(dx - rec.w/2) +
-														(dy - rec.h/2)*(dy - rec.h/2);
+	local cornerDistanceSq = (dx - rec.w / 2) * (dx - rec.w / 2) +
+			(dy - rec.h / 2) * (dy - rec.h / 2);
 
-	collision = (cornerDistanceSq <= (center.r*center.r));
+	collision = (cornerDistanceSq <= (center.r * center.r));
 
 	return collision;
 end
-
 
 ---@param angle number in radians
 local function AngleToNormalizedVector(angle, out)
@@ -68,7 +66,7 @@ local function AngleToNormalizedVector(angle, out)
 	out.y = sin(angle)
 end
 
-function UpdateBullets(dt,player)
+function UpdateBullets(dt, player)
 	local v = {}
 	playdate.graphics.setColor(playdate.graphics.kColorBlack)
 
@@ -84,15 +82,15 @@ function UpdateBullets(dt,player)
 
 			if b.isEnemy then
 				if checkCollisionCircles(
-					player.x,player.y,player.r,b.x,b.y,b.r
+					player.x, player.y, player.r, b.x, b.y, b.r
 				) then
 					player.takeDamage(1)
 					b.enabled = false
 				end
-				bulletEnemy:drawCentered(b.x,b.y)
+				bulletEnemy:drawCentered(b.x, b.y)
 				-- gfx.fillCircleAtPoint(b.x,b.y,b.r)
 			else
-				bulletPlayer:drawCentered(b.x,b.y)
+				bulletPlayer:drawCentered(b.x, b.y)
 				-- gfx.drawCircleAtPoint(b.x,b.y,b.r)
 			end
 
@@ -105,3 +103,4 @@ function UpdateBullets(dt,player)
 	end
 end
 
+--FIXME balas ainda existem quando jogador morre
