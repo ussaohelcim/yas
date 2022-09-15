@@ -179,12 +179,12 @@ end
 ---@param subdivisions number
 ---@param callback function (x,y)
 function RunOnCircle(x, y, r, subdivisions, callback)
-	--BUG
-	for a = 0, math.TAU - (math.TAU / (subdivisions)), (math.TAU / (subdivisions)) do
+	for i = 0, subdivisions - 1, 1 do
+		local t = i / subdivisions
+		local a = t * math.TAU
+
 		local rx = x + (math.cos(a) * r)
 		local ry = y + (math.sin(a) * r)
-		print(math.deg(a), "next", math.deg(a + (math.TAU / (subdivisions))))
-
 		callback(rx, ry)
 	end
 end
