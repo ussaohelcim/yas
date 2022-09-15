@@ -1,37 +1,9 @@
--- function math.lerp(value, src, dst)
--- 	return src * (1 - value) + dst * value
--- end
-
--- function math.remap(v, old_min, old_max, new_min, new_max)
--- 	return ((v - old_min) / (old_max - old_min)) * (new_max - new_min) + new_min
--- end
-
--- function ObjectPooling(list, objectToAdd)
--- 	local found = false
-
--- 	for i = 1, #list, 1 do
--- 		local o = list[i]
--- 		if not o.enabled then
-
--- 			list[i] = objectToAdd
--- 			found = true
-
--- 			break
--- 		end
--- 	end
-
--- 	if not found then
--- 		list[#list + 1] = objectToAdd
--- 	end
--- end
-
 local remap = math.remap
 local lerp = math.lerp
 local objectPooling = ObjectPooling
 
 ---Creates a particle system with this img
 ---@param img image playdate image
----@return table
 function PARTY(img)
 	local self = {}
 	self.particles = {}

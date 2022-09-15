@@ -14,6 +14,9 @@ local followerImage = playdate.graphics.image.new("assets/images/seguidor")
 
 local sfxHURT = playdate.sound.sampleplayer.new("assets/sounds/enemyHit.wav")
 local sfxDEATH = playdate.sound.sampleplayer.new("assets/sounds/enemyDeath.wav")
+local sfxSHOOT = playdate.sound.sampleplayer.new("assets/sounds/enemyShoot.wav")
+
+sfxSHOOT:setVolume(0.3)
 
 sfxDEATH:setVolume(0.5)
 
@@ -188,6 +191,8 @@ function UpdateEnemies(player, dt)
 	local dumbies = enemiesList.dumbs
 	local spawners = enemiesList.spawners
 
+	local createBullet = CreateBullet
+
 	for i = 1, #spawners, 1 do
 		local e = spawners[i]
 
@@ -235,8 +240,10 @@ function UpdateEnemies(player, dt)
 
 				if e.cooldown < 0 then
 					e.cooldown = e.cooldownTotal
-					CreateBullet(1, e.x, e.y, e.angle, 100, 5, true)
+					sfxSHOOT:play(1)
+					createBullet(1, e.x, e.y, e.angle, 100, 5, true)
 				end
+
 
 				e.angle = angle(e.x, e.y, player.x, player.y)
 
@@ -277,7 +284,8 @@ function UpdateEnemies(player, dt)
 					e.NewPosition()
 					local a = angle(e.x, e.y, player.x, player.y)
 
-					CreateBullet(1, e.x, e.y, a, 200, 15, true)
+					createBullet(1, e.x, e.y, a, 200, 15, true)
+					sfxSHOOT:play(1)
 				end
 
 				e.angle = angle(e.x, e.y, e.targetX, e.targetY)
@@ -316,10 +324,11 @@ function UpdateEnemies(player, dt)
 
 				handleEnemyHit(e)
 				if e.life <= 0 then
-					CreateBullet(0, e.x, e.y, 0, 200, 8, true)
-					CreateBullet(0, e.x, e.y, math.rad(90), 200, 8, true)
-					CreateBullet(0, e.x, e.y, math.rad(180), 200, 8, true)
-					CreateBullet(0, e.x, e.y, math.rad(-90), 200, 8, true)
+					createBullet(0, e.x, e.y, 0, 200, 8, true)
+					createBullet(0, e.x, e.y, math.rad(90), 200, 8, true)
+					createBullet(0, e.x, e.y, math.rad(180), 200, 8, true)
+					createBullet(0, e.x, e.y, math.rad(-90), 200, 8, true)
+					sfxSHOOT:play(1)
 				end
 			end
 		end
@@ -432,4 +441,4 @@ function KillAllEnemies()
 	print("enemies:", enemiesList.aliveCount)
 end
 
---TODO add shoot sound to enemies
+--TODO separar comportamento dos inimigos ?

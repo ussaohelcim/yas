@@ -2,7 +2,7 @@ name=Yas - Yet another shooter.
 author=ussaohelcim
 description=KILL THEM ALL, PLEASE!.
 bundleID=com.NILCO.Yas
-version=1.0.0
+version=1.1.2
 imagePath=assets/cartridge/
-buildNumber=100
+buildNumber=112
 

@@ -14,6 +14,7 @@ local remap = math.remap
 local PI = math.pi
 local TAU = math.TAU
 local isInBetween = math.isInBetween
+local createBullet = CreateBullet
 local tempVector = {}
 
 local playerImage = playdate.graphics.image.new("assets/images/player")
@@ -28,6 +29,8 @@ sfxBullet:setVolume(0.3)
 local lowLifeSound = playdate.sound.sampleplayer.new("assets/sounds/lowLife.wav")
 local midLifeSound = playdate.sound.sampleplayer.new("assets/sounds/midLife.wav")
 local fullLifeSound = playdate.sound.sampleplayer.new("assets/sounds/fullLife.wav")
+
+
 
 fullLifeSound:setVolume(0.2)
 -- lowLifeSound:setVolume(0.2)
@@ -61,9 +64,10 @@ function Weapon(angles, firerate, bulletSpeed, bulletSize)
 	self.bulletSpeed = bulletSpeed
 	self.size = bulletSize or 8
 
+
+
 	function self.update(dt)
 		self.cooldown = self.cooldown - dt
-
 	end
 
 	function self.tryToShoot(x, y, angle)
@@ -72,7 +76,7 @@ function Weapon(angles, firerate, bulletSpeed, bulletSize)
 			for i = 1, #self.angles, 1 do
 				local aa = angle + self.angles[i]
 				sfxBullet:play(1)
-				CreateBullet(1, x, y, aa, self.bulletSpeed, self.size, false)
+				createBullet(1, x, y, aa, self.bulletSpeed, self.size, false)
 			end
 			self.cooldown = self.fireRate
 		end
@@ -152,7 +156,9 @@ local weaponBox = {
 	y = 0,
 	r = 8,
 	enabled = false,
-	weapon = weaponList[math.random(1, #weaponList)]
+	weapon = weaponList[math.random(1, #weaponList)],
+	image = playdate.graphics.image.new("assets/images/ammoCrate"),
+	sound = playdate.sound.sampleplayer.new("assets/sounds/newWeapon.wav")
 }
 
 function SpawnWeaponBox()
@@ -298,44 +304,45 @@ function Player()
 			self.aimAngle = math.normalizedVector2ToAngle(x, y)
 			math.AngleToNormalizedVector(self.aimAngle, tempVector)
 
-			self.x = self.x + (tempVector.x * self.speed * dt) --
-			self.y = self.y + (tempVector.y * self.speed * dt) --
-			-- else
-			-- 	self.aimAngle = math.rad(playdate.getCrankPosition() - 90)
+			self.x = self.x + (tempVector.x * self.speed * dt)
+			self.y = self.y + (tempVector.y * self.speed * dt)
 		end
 
 		self.dashCooldown = self.dashCooldown - dt
 		if dash and self.dashCooldown < 0 then
+			local x1, y1 = self.x, self.y
 
 			sfxDash:play(1)
 
 			self.dashCooldown = self.dashCooldownMax
-			AddHitParticle(self.x, self.y)
 
 			self.x = self.x + (tempVector.x * self.dashForce)
 			self.y = self.y + (tempVector.y * self.dashForce)
 
-			AddHitParticle(self.x, self.y)
-		end
+			local x2, y2 = self.x, self.y
 
-		if weaponBox.enabled then
-			gfx.setPattern(checkerBoardpattern)
-			gfx.fillCircleAtPoint(weaponBox.x, weaponBox.y, weaponBox.r)
+			for i = 0, 1, 0.25 do
 
-			if checkCollisionCircles(self.x, self.y, self.r, weaponBox.x, weaponBox.y, weaponBox.r) then
-				self.weapon = weaponBox.weapon
-				--TODO add music when get new weapon
+				local x = math.lerp(i, x1, x2)
+				local y = math.lerp(i, y1, y2)
 
-				weaponBox.enabled = false
+				AddHitParticle(x, y)
 			end
 		end
 
-
+		if weaponBox.enabled then
+			weaponBox.image:draw(weaponBox.x, weaponBox.y)
+			if checkCollisionCircles(self.x, self.y, self.r, weaponBox.x, weaponBox.y, weaponBox.r) then
+				self.weapon = weaponBox.weapon
+				weaponBox.sound:play(1)
+				AddFlashParticle(weaponBox.x + weaponBox.r, weaponBox.y + weaponBox.r)
+				weaponBox.enabled = false
+			end
+		end
 	end
 
 	function self.draw()
 		gfx.setColor(gfx.kColorWhite)
-
 		if self.dashCooldown <= 0 then
 			dashRadiusImage:drawCentered(self.x, self.y)
 		end

@@ -34,7 +34,6 @@ local function CreateLevel()
 			print("starting wave", self.waveNumber)
 			for i = 1, #list, 1 do
 				local e = list[i]
-				-- TODO spawnar os inimigos em quadrantes separados do retangulo da tela, isso vai impossibilitar do jogador escolher um local para prender todos os inimigos no angulo de tiro
 				CreateEnemy(
 					e.x or math.random(0, 400), e.y or math.random(0, 240),
 					e.enemyType,
@@ -84,25 +83,8 @@ LevelNumber = 1
 function StartLevel()
 	DisableWeaponBox()
 
-	local l = 0
-	local w = nil
-
-	if PLAYER ~= nil then
-		l = PLAYER.life
-		w = PLAYER.weapon
-	end
-
-	-- PLAYER = Player()
-	if w ~= nil then
-
-		PLAYER.weapon = w
-	end
-
-	if l ~= 0 then
-		PLAYER.life = l
-	end
 	print("starting level", LevelNumber)
-	-- print("em jogo")
+
 	CurrentLevel.addEndlevelCallback(NextLevel)
 
 	playdate.update = GameScreen
@@ -132,10 +114,7 @@ function NextLevel()
 					image = playdate.graphics.image.new("assets/images/final")
 				}
 
-			}, (function()
-				print("era pra ter chamado o menu")
-				MainMenu()
-			end)
+			}, MainMenu
 		)
 		playdate.update = endGameCinematic.update
 	else

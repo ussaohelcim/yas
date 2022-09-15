@@ -5,6 +5,9 @@ local DT = GetDeltaTime
 local updateEnemies = UpdateEnemies
 local updateBullets = UpdateBullets
 local updateShakeScreen = UpdateShakeScreen
+local drawBelowParticles = DrawBelowParticles
+local drawTopParticles = DrawTopParticles
+local updateTimedFunctions = UpdateTimedFunctions
 
 local showedGameOver = false
 PLAYER = nil
@@ -71,7 +74,8 @@ function GameScreen()
 	local dt = DT()
 	playdate.graphics.sprite.update()
 
-	DrawBelowParticles()
+
+	drawBelowParticles()
 
 	if PLAYER.invencible then
 		blood:draw(0, 0)
@@ -88,7 +92,7 @@ function GameScreen()
 
 	updateShakeScreen(dt)
 
-	DrawTopParticles()
+	drawTopParticles()
 
 	CurrentLevel.checkWave()
 
@@ -99,6 +103,6 @@ function GameScreen()
 		)
 	end
 
-	UpdateTimedFunctions(dt)
+	updateTimedFunctions(dt)
 
 end

@@ -1,8 +1,10 @@
 import "mathExtensions"
+import "party"
 
 local timeDT = playdate.getCurrentTimeMilliseconds
 local _lastDT = timeDT()
 local gfx = playdate.graphics
+local lerp = math.lerp
 
 COLORS = {
 	black = gfx.kColorBlack,
@@ -21,11 +23,10 @@ function GetDeltaTime()
 	return dt * 0.001
 end
 
-
 ---Adds a .cooldown and .cooldownTotal member into table with coolDown
 ---@param table any
 ---@param coolDown any
-function AddCooldownComponentInto(table,coolDown)
+function AddCooldownComponentInto(table, coolDown)
 	table.cooldown = coolDown
 	table.cooldownTotal = coolDown
 end
@@ -37,8 +38,8 @@ local checkerBoardpattern = { 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55 }
 local blood = gfx.image.new(20, 20)
 gfx.setColor(gfx.kColorWhite)
 gfx.pushContext(blood)
-gfx.drawLine(0,0,20,20)
-gfx.drawLine(20,0,0,20)
+gfx.drawLine(0, 0, 20, 20)
+gfx.drawLine(20, 0, 0, 20)
 gfx.popContext()
 gfx.setColor(gfx.kColorBlack)
 
@@ -46,7 +47,7 @@ function UpdateShakeScreen(dt)
 	if shakeTime > 0 then
 		shakeTime = shakeTime - dt
 		gfx.setDrawOffset(
-			math.random() * 5,math.random() * 5
+			math.random() * 5, math.random() * 5
 		)
 		-- playdate.display.setInverted(false)
 	end
@@ -69,6 +70,9 @@ particles.below = {} -- particles that get drew on below everything
 particles.below.blood = {}
 particles.below.spawnAlerts = {}
 
+-- local playerImage = playdate.graphics.image.new("assets/images/player")
+
+-- particles.below.ghosts = PARTY(playerImage)
 
 function DrawTopParticles()
 
@@ -99,8 +103,8 @@ function DrawBelowParticles()
 
 		if bloodP.ttl > 0 then
 			bloodP.ttl = bloodP.ttl - 1
-			
-			blood:drawCentered(bloodP.x,bloodP.y)
+
+			blood:drawCentered(bloodP.x, bloodP.y)
 
 			if bloodP.ttl <= 0 then
 				bloodP.enabled = false
@@ -119,7 +123,7 @@ function ObjectPooling(list, objectToAdd)
 	for i = 1, #list, 1 do
 		local o = list[i]
 		if not o.enabled then
-			
+
 			list[i] = objectToAdd
 			found = true
 
@@ -128,7 +132,7 @@ function ObjectPooling(list, objectToAdd)
 	end
 
 	if not found then
-		list[#list+1] = objectToAdd
+		list[#list + 1] = objectToAdd
 	end
 end
 
@@ -137,7 +141,7 @@ local tempVector = {}
 local random = math.random
 
 function AddBloodParticles(x, y)
-	
+
 	objectPoolingTemplate(particles.below.blood, {
 		x = x,
 		y = y,
@@ -147,7 +151,45 @@ function AddBloodParticles(x, y)
 
 end
 
-function AddSpawnAlert(x,y)
+function AddGhostParticles(x, y)
+	particles.below.ghosts.createParticle(x, y, 0.5, 0, 0)
+
+end
+
+---Run 'callback(x,y)', 'subdivisions' times along this line
+---@param x1 number
+---@param y1 number
+---@param x2 number
+---@param y2 number
+---@param subdivisions number
+---@param callback function (x,y)
+function RunOnLine(x1, y1, x2, y2, subdivisions, callback)
+	for i = 0, 1, (1 / (subdivisions - 1)) do
+		local x = lerp(i, x1, x2)
+		local y = lerp(i, y1, y2)
+		print(i)
+		callback(x, y)
+	end
+end
+
+---Run 'callback(x,y)', 'subdivisions' times along this circle(x,y,r)
+---@param x number
+---@param y number
+---@param r number
+---@param subdivisions number
+---@param callback function (x,y)
+function RunOnCircle(x, y, r, subdivisions, callback)
+	--BUG
+	for a = 0, math.TAU - (math.TAU / (subdivisions)), (math.TAU / (subdivisions)) do
+		local rx = x + (math.cos(a) * r)
+		local ry = y + (math.sin(a) * r)
+		print(math.deg(a), "next", math.deg(a + (math.TAU / (subdivisions))))
+
+		callback(rx, ry)
+	end
+end
+
+function AddSpawnAlert(x, y)
 	objectPoolingTemplate(particles.below.spawnAlerts, {
 		x = x,
 		y = y,
@@ -156,7 +198,7 @@ function AddSpawnAlert(x,y)
 	})
 end
 
-function AddTextParticles(x, y, txt, ttl,speedY)
+function AddTextParticles(x, y, txt, ttl, speedY)
 	objectPoolingTemplate(particles.top.textParticles, {
 		x = x,
 		y = y,
@@ -168,7 +210,7 @@ function AddTextParticles(x, y, txt, ttl,speedY)
 
 end
 
-function AddFlashParticle(x,y)
+function AddFlashParticle(x, y)
 	objectPoolingTemplate(particles.top.flashes, {
 		x = x,
 		y = y,
@@ -178,7 +220,7 @@ function AddFlashParticle(x,y)
 	})
 end
 
-function AddExplosionParticles(x,y,ttl)
+function AddExplosionParticles(x, y, ttl)
 	local found = false
 	local list = particles.top.explosions
 
@@ -188,7 +230,7 @@ function AddExplosionParticles(x,y,ttl)
 			explosion.x = x
 			explosion.y = y
 			explosion.ttl = ttl
-			
+
 			found = true
 
 			break
@@ -204,14 +246,14 @@ function AddExplosionParticles(x,y,ttl)
 	end
 end
 
-function UIRow(x,y)
+function UIRow(x, y)
 	local self = {}
 	self.items = {}
 	self.cursorPosition = 1
 	self.x = x
 	self.y = y
 
-	function self.addItem(txt,callback)
+	function self.addItem(txt, callback)
 		self.items[#self.items + 1] = {
 			txt = txt,
 			callback = callback
@@ -220,21 +262,21 @@ function UIRow(x,y)
 
 	function self.draw()
 		local lastY = self.y
-		
+
 		for i = 1, #self.items, 1 do
 
 			local txt = self.items[i].txt
 			local w, h = gfx.getTextSize(txt)
 
 			-- gfx.drawRect(0,0,100,100)
-			
+
 			gfx.drawText(txt, self.x, lastY)
 
 			if self.cursorPosition == i then
 				gfx.drawText(" Ⓐ", self.x + w, lastY)
 			end
 			-- gfx.drawCircleAtPoint(self.x,lastY,5)
-			
+
 
 			lastY = lastY + h
 		end
@@ -245,7 +287,7 @@ function UIRow(x,y)
 			self.select(-1)
 		elseif playdate.buttonJustPressed("down") then
 			self.select(1)
-		
+
 		end
 
 		if playdate.buttonJustPressed("a") then
@@ -273,7 +315,7 @@ function UIRow(x,y)
 
 	function self.select(y)
 		self.cursorPosition = self.cursorPosition + y
-		if self.cursorPosition <=0 then
+		if self.cursorPosition <= 0 then
 			self.cursorPosition = 1
 		elseif self.cursorPosition > #self.items then
 			self.cursorPosition = #self.items
@@ -285,7 +327,7 @@ end
 
 local hitParticleImage = playdate.graphics.image.new("assets/images/hitParticle")
 
-function AddHitParticle(x,y)
+function AddHitParticle(x, y)
 	objectPoolingTemplate(particles.top.hitParticles, {
 		x = x,
 		y = y,
@@ -300,7 +342,7 @@ function DrawHitParticles()
 
 		if p.ttl > 0 then
 			p.ttl = p.ttl - 1
-			hitParticleImage:drawRotated(p.x,p.y,math.random()*360)
+			hitParticleImage:drawRotated(p.x, p.y, math.random() * 360)
 
 			if p.ttl <= 0 then
 				p.enabled = false
@@ -311,8 +353,8 @@ end
 
 function memoize(f)
 	local mem = {} -- memoizing table
-	setmetatable(mem, {__mode = "kv"}) -- make it weak
-	return function (x) -- new version of ’f’, with memoizing
+	setmetatable(mem, { __mode = "kv" }) -- make it weak
+	return function(x) -- new version of ’f’, with memoizing
 		local r = mem[x]
 		if r == nil then -- no previous result?
 			r = f(x) -- calls original function
@@ -321,11 +363,10 @@ function memoize(f)
 		return r
 	end
 	-- Given any function f, memoize(f) returns a new function that returns the same
--- results as f but memoizes them. For instance, we can redefine loadstring with
--- a memoizing version:
--- loadstring = memoize(loadstring)
--- We use this new function exactly like the old one, but if there are many repeated
--- strings among those we are loading, we can have a substantial performance
--- gain
+	-- results as f but memoizes them. For instance, we can redefine loadstring with
+	-- a memoizing version:
+	-- loadstring = memoize(loadstring)
+	-- We use this new function exactly like the old one, but if there are many repeated
+	-- strings among those we are loading, we can have a substantial performance
+	-- gain
 end
-

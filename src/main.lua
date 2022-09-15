@@ -56,8 +56,4 @@ MainMenu()
 -- (barulho de riscando) damn, that was hard
 -- its my pleasure (?)
 
--- TODO criar sprites para a caixa de arma
-
--- FIXME utilizar funcoes locais todo onde
-
 -- FIXME aparentemente, sempre que reinicia o jogo aloca mais memoria (acho que so ocorre com o malloc log ligado)
