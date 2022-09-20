@@ -5,6 +5,7 @@ local timeDT = playdate.getCurrentTimeMilliseconds
 local _lastDT = timeDT()
 local gfx = playdate.graphics
 local lerp = math.lerp
+local TAU = math.TAU
 
 COLORS = {
 	black = gfx.kColorBlack,
@@ -69,10 +70,6 @@ particles.top.flashes = {}
 particles.below = {} -- particles that get drew on below everything
 particles.below.blood = {}
 particles.below.spawnAlerts = {}
-
--- local playerImage = playdate.graphics.image.new("assets/images/player")
-
--- particles.below.ghosts = PARTY(playerImage)
 
 function DrawTopParticles()
 
@@ -181,7 +178,7 @@ end
 function RunOnCircle(x, y, r, subdivisions, callback)
 	for i = 0, subdivisions - 1, 1 do
 		local t = i / subdivisions
-		local a = t * math.TAU
+		local a = t * TAU
 
 		local rx = x + (math.cos(a) * r)
 		local ry = y + (math.sin(a) * r)
@@ -262,21 +259,16 @@ function UIRow(x, y)
 
 	function self.draw()
 		local lastY = self.y
-
 		for i = 1, #self.items, 1 do
 
 			local txt = self.items[i].txt
 			local w, h = gfx.getTextSize(txt)
-
-			-- gfx.drawRect(0,0,100,100)
 
 			gfx.drawText(txt, self.x, lastY)
 
 			if self.cursorPosition == i then
 				gfx.drawText(" Ⓐ", self.x + w, lastY)
 			end
-			-- gfx.drawCircleAtPoint(self.x,lastY,5)
-
 
 			lastY = lastY + h
 		end

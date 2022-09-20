@@ -2,7 +2,8 @@ name=Yas - Yet another shooter.
 author=ussaohelcim
 description=KILL THEM ALL, PLEASE!.
 bundleID=com.NILCO.Yas
-version=1.1.2
+version=1.1.3
 imagePath=assets/cartridge/
-buildNumber=112
+buildNumber=113
+contentWarning=THIS GAME CONTAINS FAST FLASHING IMAGES. IT MAY CAUSE DISCOMFORT AND TRIGGER SEIZURES FOR PEOPLE WITH PHOTOSENSITIVE EPILEPSY.
 

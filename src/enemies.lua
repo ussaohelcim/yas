@@ -16,9 +16,9 @@ local sfxHURT = playdate.sound.sampleplayer.new("assets/sounds/enemyHit.wav")
 local sfxDEATH = playdate.sound.sampleplayer.new("assets/sounds/enemyDeath.wav")
 local sfxSHOOT = playdate.sound.sampleplayer.new("assets/sounds/enemyShoot.wav")
 
-sfxSHOOT:setVolume(0.3)
-
-sfxDEATH:setVolume(0.5)
+sfxSHOOT:setVolume(0.15)
+sfxHURT:setVolume(0.3)
+sfxDEATH:setVolume(0.2)
 
 local spawnAlertImg = gfx.image.new("assets/images/spawnAlert")
 
@@ -82,8 +82,10 @@ function CreateEnemy(x, y, type, life, speed, r)
 		-- e.r = r
 		e.Spawn = function()
 			CreateEnemy(
-				rand(0, 400),
-				rand(0, 240), --x,y
+				PLAYER.x,
+				PLAYER.y, --x,y
+				-- rand(0, 400),
+				-- rand(0, 240), --x,y
 				-- rand(e.x - e.r, e.x + e.r),
 				-- rand(e.y - e.r, e.y + e.r), --x,y
 				4, --type
@@ -103,7 +105,7 @@ function CreateEnemy(x, y, type, life, speed, r)
 		e.speed = speed or math.random(100, 200)
 		e.speedTotal = e.speed
 
-		AddCooldownComponentInto(e, 1)
+		AddCooldownComponentInto(e, math.random() * 2)
 
 		e.NewPosition = function()
 			e.targetX = rand(0, 400)
@@ -184,14 +186,14 @@ local function drawEnemy(e, img, dt)
 	end
 end
 
+local createBullet = CreateBullet
+
 function UpdateEnemies(player, dt)
 	local turrets = enemiesList.turrets
 	local followers = enemiesList.followers
 	local dumbsWithTurrets = enemiesList.dumbsWithTurrets
 	local dumbies = enemiesList.dumbs
 	local spawners = enemiesList.spawners
-
-	local createBullet = CreateBullet
 
 	for i = 1, #spawners, 1 do
 		local e = spawners[i]
@@ -225,6 +227,18 @@ function UpdateEnemies(player, dt)
 			end
 
 			handleEnemyHit(e)
+
+			if e.life <= 0 then
+				createBullet(0, e.x, e.y, 0, 200, 8, true)
+				createBullet(0, e.x, e.y, math.rad(90), 200, 8, true)
+				createBullet(0, e.x, e.y, math.rad(180), 200, 8, true)
+				createBullet(0, e.x, e.y, math.rad(-90), 200, 8, true)
+				createBullet(0, e.x, e.y, math.rad(45), 200, 8, true)
+				createBullet(0, e.x, e.y, math.rad(-45), 200, 8, true)
+				createBullet(0, e.x, e.y, math.rad(180 + 45), 200, 8, true)
+				createBullet(0, e.x, e.y, math.rad(180 - 45), 200, 8, true)
+				sfxSHOOT:play(1)
+			end
 		end
 	end
 
@@ -244,7 +258,6 @@ function UpdateEnemies(player, dt)
 					createBullet(1, e.x, e.y, e.angle, 100, 5, true)
 				end
 
-
 				e.angle = angle(e.x, e.y, player.x, player.y)
 
 				math.AngleToNormalizedVector(e.angle, tempVector)
@@ -260,6 +273,7 @@ function UpdateEnemies(player, dt)
 				drawEnemy(e, turretImage, dt)
 
 				handleEnemyHit(e)
+
 			end
 		end
 	end
@@ -284,7 +298,7 @@ function UpdateEnemies(player, dt)
 					e.NewPosition()
 					local a = angle(e.x, e.y, player.x, player.y)
 
-					createBullet(1, e.x, e.y, a, 200, 15, true)
+					createBullet(1, e.x, e.y, a, 100, 15, true)
 					sfxSHOOT:play(1)
 				end
 
@@ -294,7 +308,6 @@ function UpdateEnemies(player, dt)
 				e.x = e.x + (tempVector.x * e.speed * dt)
 				e.y = e.y + (tempVector.y * e.speed * dt)
 
-				-- gfx.drawLine(e.x, e.y, e.targetX, e.targetY)
 				drawEnemy(e, dumbWithTurretImage, dt)
 
 				handleEnemyHit(e)

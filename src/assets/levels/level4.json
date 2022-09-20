@@ -14,7 +14,7 @@
 			{
 				"enemyType" : 4,
 				"enemyLife": 7,
-				"speed": 190
+				"speed": 120
 			}
 		],
 		[
@@ -38,7 +38,7 @@
 			{
 				"enemyType" : 3,
 				"enemyLife": 10,
-				"speed": 150
+				"speed": 100
 			},
 			{
 				"enemyType" : 4,

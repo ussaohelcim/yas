@@ -18,12 +18,16 @@ import "levels"
 import "game"
 
 
+local mainMusic = playdate.sound.sampleplayer.new("assets/sounds/mainMenu.wav")
+
+mainMusic:setVolume(0.6)
+
 function MainMenu()
 	local cinematic = Cinematic(
 		{
 			{
 				image = playdate.graphics.image.new("assets/images/mainMenu"),
-				sound = playdate.sound.sampleplayer.new("assets/sounds/mainMenu.wav"),
+				sound = mainMusic,
 				loopSound = true
 			},
 			{
@@ -31,7 +35,6 @@ function MainMenu()
 			},
 			{
 				image = playdate.graphics.image.new("assets/images/ok"),
-				-- sound = playdate.sound.sampleplayer.new("assets/sounds/egg.wav")
 			},
 		},
 		NewGame
@@ -57,3 +60,9 @@ MainMenu()
 -- its my pleasure (?)
 
 -- FIXME aparentemente, sempre que reinicia o jogo aloca mais memoria (acho que so ocorre com o malloc log ligado)
+
+-- FIXME impossibilitar de andar durante cinematicas
+-- TODO adicionar espinhos no canto da tela
+-- TODO musica de fim de jogo
+
+-- terminei com a 360 (facil)

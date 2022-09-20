@@ -15,7 +15,6 @@ local bulletEnemy = playdate.graphics.image.new("assets/images/bulletEnemy")
 local bulletPlayer = playdate.graphics.image.new("assets/images/bulletPlayer")
 
 function CreateBullet(type, x, y, angle, speed, size, isEnemy)
-
 	objectPoolingTemplate(BulletList, {
 		enabled = true,
 		x = x,
@@ -95,13 +94,10 @@ function UpdateBullets(dt, player)
 					b.enabled = false
 				end
 				bulletEnemy:drawCentered(b.x, b.y)
-				-- gfx.fillCircleAtPoint(b.x,b.y,b.r)
 			else
 				bulletPlayer:drawCentered(b.x, b.y)
-				-- gfx.drawCircleAtPoint(b.x,b.y,b.r)
 			end
 
-			-- gfx.setLineWidth(1)
 			--if not inside screen
 			if not checkCollisionCircleRect(b, screen) then
 				b.enabled = false

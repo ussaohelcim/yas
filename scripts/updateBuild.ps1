@@ -5,27 +5,41 @@ $pdxinfo = Get-Content (Join-Path ($PSScriptRoot) ".." ("src","pdxinfo"))
 $pdxinfo = $pdxinfo.Split("\n")
 $output = ""
 
-foreach($line in $pdxinfo){
-	#buildNumber=123
-	$l = ""
-	$empty = ""
+if("" -eq $version){
+	foreach($line in $pdxinfo){
 
-	if($line.StartsWith("buildNumber")){
-		$v = $version.Replace('.','')
-		$l = "buildNumber=" + $v + "`n"
-	}
-	elseif($line.StartsWith("version")){
-		$l = "version=" + $version + "`n"
-	} else{
-		$l = $line + "`n"
-	}
+		if($line.StartsWith("buildNumber")){
+			Write-Host $line
+		}
+		elseif($line.StartsWith("version")){
+			Write-Host $line
+		} 
 
-	if($l -ne "`n"){
-		$output += $l #+ "`n"
 	}
-
 }
+else{
 
-Set-Content (Join-Path ($PSScriptRoot) ".." ("src","pdxinfo")) $output
+	foreach($line in $pdxinfo){
+		#buildNumber=123
+		$l = ""
+		$empty = ""
+	
+		if($line.StartsWith("buildNumber")){
+			$v = $version.Replace('.','')
+			$l = "buildNumber=" + $v + "`n"
+		}
+		elseif($line.StartsWith("version")){
+			$l = "version=" + $version + "`n"
+		} else{
+			$l = $line + "`n"
+		}
+	
+		if($l -ne "`n"){
+			$output += $l #+ "`n"
+		}
+	}
 
-Write-Host $output
+	Set-Content (Join-Path ($PSScriptRoot) ".." ("src","pdxinfo")) $output
+	
+	Write-Host $output
+}

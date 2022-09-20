@@ -14,27 +14,22 @@ local remap = math.remap
 local PI = math.pi
 local TAU = math.TAU
 local isInBetween = math.isInBetween
-local createBullet = CreateBullet
+
 local tempVector = {}
 
 local playerImage = playdate.graphics.image.new("assets/images/player")
 local sfxHURT = playdate.sound.sampleplayer.new("assets/sounds/death.wav")
-local sfxBullet = playdate.sound.sampleplayer.new("assets/sounds/shoot.wav")
-
 local sfxDash = playdate.sound.sampleplayer.new("assets/sounds/dash.wav")
-
-sfxDash:setVolume(0.3)
-sfxBullet:setVolume(0.3)
-
 local lowLifeSound = playdate.sound.sampleplayer.new("assets/sounds/lowLife.wav")
 local midLifeSound = playdate.sound.sampleplayer.new("assets/sounds/midLife.wav")
 local fullLifeSound = playdate.sound.sampleplayer.new("assets/sounds/fullLife.wav")
 
-
-
 fullLifeSound:setVolume(0.2)
 -- lowLifeSound:setVolume(0.2)
 midLifeSound:setVolume(0.5)
+sfxHURT:setVolume(0.5)
+sfxDash:setVolume(0.2)
+
 
 local lifeSound = fullLifeSound
 
@@ -48,129 +43,6 @@ gfx.drawCircleInRect(0, 0, dashRadius * 2, dashRadius * 2)
 gfx.setColor(gfx.kColorBlack)
 gfx.popContext()
 
-
-
----comment
----@param angles table list of angles
----@param firerate number in seconds
----@param bulletSpeed number
----@param bulletSize number
-function Weapon(angles, firerate, bulletSpeed, bulletSize)
-	local self = {}
-
-	self.fireRate = firerate
-	self.cooldown = self.fireRate
-	self.angles = angles
-	self.bulletSpeed = bulletSpeed
-	self.size = bulletSize or 8
-
-
-
-	function self.update(dt)
-		self.cooldown = self.cooldown - dt
-	end
-
-	function self.tryToShoot(x, y, angle)
-
-		if self.cooldown <= 0 then
-			for i = 1, #self.angles, 1 do
-				local aa = angle + self.angles[i]
-				sfxBullet:play(1)
-				createBullet(1, x, y, aa, self.bulletSpeed, self.size, false)
-			end
-			self.cooldown = self.fireRate
-		end
-
-	end
-
-	return self
-end
-
-local wPistol = Weapon(
-	{
-		math.rad(0)
-	}, 0.3, 200, 8
-)
-
-local wLeftRight = Weapon(
-	{
-		math.rad(90),
-		math.rad(-90),
-	}, 0.1, 200, 8
-)
-
-local wFowardBackward = Weapon(
-	{
-		math.rad(0),
-		math.rad(180),
-	}, 0.1, 200, 8
-)
-
-local wTrident = Weapon(
-	{
-		math.rad(-45),
-		math.rad(0),
-		math.rad(45)
-	}, 0.3, 200, 8
-)
-
-local wShotgun = Weapon(
-	{
-		math.rad(-20),
-		math.rad(-10),
-		math.rad(0),
-		math.rad(10),
-		math.rad(20),
-	}, 0.6, 200, 8
-)
-
-
-local wCross = Weapon(
-	{
-		math.rad(-90),
-		math.rad(0),
-		math.rad(90),
-		math.rad(180),
-	}, 0.3, 200, 8
-)
-
-local w360 = Weapon(
-	{
-		math.rad(0),
-		math.rad(45),
-		math.rad(90),
-		math.rad(135),
-		math.rad(180),
-		math.rad(225),
-		math.rad(270),
-		math.rad(315),
-	}, 0.5, 200, 8
-)
-
-local weaponList = {
-	w360, wCross, wShotgun, wTrident, wFowardBackward, wLeftRight
-}
-
-local weaponBox = {
-	x = 0,
-	y = 0,
-	r = 8,
-	enabled = false,
-	weapon = weaponList[math.random(1, #weaponList)],
-	image = playdate.graphics.image.new("assets/images/ammoCrate"),
-	sound = playdate.sound.sampleplayer.new("assets/sounds/newWeapon.wav")
-}
-
-function SpawnWeaponBox()
-	weaponBox.weapon = weaponList[math.random(1, #weaponList)]
-	weaponBox.x = math.random() * 400
-	weaponBox.y = math.random() * 240
-	weaponBox.enabled = true
-end
-
-function DisableWeaponBox()
-	weaponBox.enabled = false
-end
 
 function Player()
 	local self = {}
@@ -198,7 +70,7 @@ function Player()
 	self.maxLife = 5
 	self.x = 400 / 2
 	self.y = 240 / 2
-	self.r = 16
+	self.r = 12
 	self.front = true
 	self.speed = 100
 	self.runSpeed = 200
@@ -207,7 +79,9 @@ function Player()
 	self.invencibleCooldown = 0.5
 	self.bulletSpeed = 300
 
-	self.weapon = weaponList[math.random(1, #weaponList)]
+	self.inControl = false
+
+	self.weapon = nil
 
 	lifeSound = fullLifeSound
 
@@ -330,15 +204,10 @@ function Player()
 			end
 		end
 
-		if weaponBox.enabled then
-			weaponBox.image:draw(weaponBox.x, weaponBox.y)
-			if checkCollisionCircles(self.x, self.y, self.r, weaponBox.x, weaponBox.y, weaponBox.r) then
-				self.weapon = weaponBox.weapon
-				weaponBox.sound:play(1)
-				AddFlashParticle(weaponBox.x + weaponBox.r, weaponBox.y + weaponBox.r)
-				weaponBox.enabled = false
-			end
-		end
+	end
+
+	function self.stopSounds()
+		lifeSound:stop()
 	end
 
 	function self.draw()
@@ -358,12 +227,12 @@ function Player()
 
 	function self.drawHealthBar()
 		gfx.drawRect(
-			self.x - self.r, self.y + self.r,
+			self.x - self.r, self.y + 16,
 			self.r * 2, 5
 		)
 
 		gfx.fillRect(
-			self.x - self.r, self.y + self.r,
+			self.x - self.r, self.y + 16,
 			(self.r * 2) * remap(self.life, 0, self.maxLife, 0, 1), 5
 		)
 	end

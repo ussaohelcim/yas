@@ -610,3 +610,11 @@ end
 function math.isInBetween(value, min, max)
   return value >= min and value <= max
 end
+
+---Returns a random number between [min,max)
+---@param min number
+---@param max number
+---@return number
+function math.randomBetween(min, max)
+  return math.random() * (max - min) + min
+end

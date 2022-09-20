@@ -55,7 +55,7 @@ local function CreateLevel()
 		end
 
 		if self.finished and (not self.callbackCalled) then
-			SpawnWeaponBox()
+			SpawnBoxes()
 
 			self.finished = false
 			AddTimedFunction(self.endLevelCallback, 5, false)
@@ -81,7 +81,7 @@ CurrentLevel = nil
 LevelNumber = 1
 
 function StartLevel()
-	DisableWeaponBox()
+	DisableBoxes()
 
 	print("starting level", LevelNumber)
 
@@ -95,6 +95,15 @@ function NextLevel()
 	LevelNumber = LevelNumber + 1
 
 	CurrentLevel = LevelsList[LevelNumber]
+
+	if PLAYER then
+		-- PLAYER.lifeSound:stop()
+		PLAYER.stopSounds()
+		PLAYER.x = 200
+		PLAYER.y = 120
+	end
+
+
 
 	if CurrentLevel == nil then
 		--TELA de vitoria
@@ -111,11 +120,15 @@ function NextLevel()
 					image = playdate.graphics.image.new("assets/images/final2")
 				},
 				{
+					image = playdate.graphics.image.new("assets/images/theEndText")
+				},
+				{
 					image = playdate.graphics.image.new("assets/images/final")
-				}
+				},
 
 			}, MainMenu
 		)
+
 		playdate.update = endGameCinematic.update
 	else
 		local c =
@@ -123,7 +136,7 @@ function NextLevel()
 			{
 				{
 					image = tokill[LevelNumber],
-					sound = itsTimeToKill
+					-- sound = itsTimeToKill
 				}
 			},
 			StartLevel
@@ -152,9 +165,9 @@ function RefreshLevels()
 end
 
 LevelsList = {
-	LevelFromJson("assets/levels/level1.json"),
-	LevelFromJson("assets/levels/level2.json"),
-	LevelFromJson("assets/levels/level3.json"),
-	LevelFromJson("assets/levels/level4.json"), --FIXME too much hard
+	-- LevelFromJson("assets/levels/level1.json"),
+	-- LevelFromJson("assets/levels/level2.json"),
+	-- LevelFromJson("assets/levels/level3.json"),
+	-- LevelFromJson("assets/levels/level4.json"),
 	LevelFromJson("assets/levels/level5.json")
 }
