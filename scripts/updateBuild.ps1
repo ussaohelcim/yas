@@ -22,7 +22,6 @@ else{
 	foreach($line in $pdxinfo){
 		#buildNumber=123
 		$l = ""
-		$empty = ""
 	
 		if($line.StartsWith("buildNumber")){
 			$v = $version.Replace('.','')

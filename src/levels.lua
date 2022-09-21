@@ -13,6 +13,10 @@ local thatWasEasy = playdate.sound.sampleplayer.new("assets/sounds/thatWasEasy.w
 local thatWasHard = playdate.sound.sampleplayer.new("assets/sounds/thatWasHard.wav")
 local itsTimeToKill = playdate.sound.sampleplayer.new("assets/sounds/itsTimeToKil.wav")
 
+local endGameMusic = playdate.sound.sampleplayer.new("assets/sounds/endMusic.wav")
+
+endGameMusic:setVolume(0.5)
+
 local function CreateLevel()
 	local self = {}
 	self.waves = {}
@@ -123,7 +127,9 @@ function NextLevel()
 					image = playdate.graphics.image.new("assets/images/theEndText")
 				},
 				{
-					image = playdate.graphics.image.new("assets/images/final")
+					image = playdate.graphics.image.new("assets/images/final"),
+					sound = endGameMusic,
+					loopSound = true
 				},
 
 			}, MainMenu
@@ -165,9 +171,9 @@ function RefreshLevels()
 end
 
 LevelsList = {
-	-- LevelFromJson("assets/levels/level1.json"),
-	-- LevelFromJson("assets/levels/level2.json"),
-	-- LevelFromJson("assets/levels/level3.json"),
-	-- LevelFromJson("assets/levels/level4.json"),
+	LevelFromJson("assets/levels/level1.json"),
+	LevelFromJson("assets/levels/level2.json"), --muito facil?
+	LevelFromJson("assets/levels/level3.json"),
+	LevelFromJson("assets/levels/level4.json"),
 	LevelFromJson("assets/levels/level5.json")
 }

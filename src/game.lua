@@ -11,8 +11,18 @@ local updateTimedFunctions = UpdateTimedFunctions
 local checkCollisionCircles = math.checkCollisionCircles
 local randomBetween = math.randomBetween
 local createBullet = CreateBullet
+local drawFPS = playdate.drawFPS
+
 local showedGameOver = false
 PLAYER = nil
+
+local menu = playdate.getSystemMenu()
+
+local showFPS = false
+
+local menuItem, error = menu:addCheckmarkMenuItem("Show FPS", false, function()
+	showFPS = not showFPS
+end)
 
 local bg = playdate.graphics.image.new(400, 240)
 
@@ -73,9 +83,10 @@ function Weapon(angles, firerate, bulletSpeed, bulletSize)
 	return self
 end
 
-local wPistol = Weapon(
+local wDualPistol = Weapon(
 	{
-		math.rad(0)
+		math.rad(15),
+		math.rad(-15),
 	}, 0.3, 200, 8
 )
 
@@ -83,7 +94,7 @@ local wLeftRight = Weapon(
 	{ -- rapido
 		math.rad(90),
 		math.rad(-90),
-	}, 0.27, 200, 8
+	}, 0.22, 200, 8
 )
 
 local wFowardBackward = Weapon(
@@ -134,7 +145,7 @@ local w360 = Weapon(
 )
 
 local weaponList = {
-	wLeftRight, wCross, wShotgun, wTrident, --w360,
+	wDualPistol, wShotgun, wTrident, wLeftRight, wCross, w360,
 }
 
 local sfxBox = playdate.sound.sampleplayer.new("assets/sounds/newWeapon.wav")
@@ -288,5 +299,9 @@ function GameScreen()
 	end
 
 	updateTimedFunctions(dt)
+
+	if showFPS then
+		drawFPS(0, 0)
+	end
 
 end

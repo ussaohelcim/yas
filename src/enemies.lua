@@ -116,11 +116,6 @@ function CreateEnemy(x, y, type, life, speed, r)
 		e.NewPosition()
 	end
 
-	-- print("followers",#enemiesList.followers)
-	-- print("spawners",#enemiesList.spawners)
-	-- print("dumbs", #enemiesList.dumbsWithTurrets)
-	-- print("dumbsWithTurrets", #enemiesList.dumbsWithTurrets)
-	-- print("turrets", #enemiesList.turrets)
 end
 
 local tempVector = {}
@@ -229,14 +224,14 @@ function UpdateEnemies(player, dt)
 			handleEnemyHit(e)
 
 			if e.life <= 0 then
-				createBullet(0, e.x, e.y, 0, 200, 8, true)
-				createBullet(0, e.x, e.y, math.rad(90), 200, 8, true)
-				createBullet(0, e.x, e.y, math.rad(180), 200, 8, true)
-				createBullet(0, e.x, e.y, math.rad(-90), 200, 8, true)
-				createBullet(0, e.x, e.y, math.rad(45), 200, 8, true)
-				createBullet(0, e.x, e.y, math.rad(-45), 200, 8, true)
-				createBullet(0, e.x, e.y, math.rad(180 + 45), 200, 8, true)
-				createBullet(0, e.x, e.y, math.rad(180 - 45), 200, 8, true)
+				createBullet(0, e.x, e.y, 0, 100, 8, true)
+				createBullet(0, e.x, e.y, math.rad(90), 100, 8, true)
+				createBullet(0, e.x, e.y, math.rad(180), 100, 8, true)
+				createBullet(0, e.x, e.y, math.rad(-90), 100, 8, true)
+				createBullet(0, e.x, e.y, math.rad(45), 100, 8, true)
+				createBullet(0, e.x, e.y, math.rad(-45), 100, 8, true)
+				createBullet(0, e.x, e.y, math.rad(180 + 45), 100, 8, true)
+				createBullet(0, e.x, e.y, math.rad(180 - 45), 100, 8, true)
 				sfxSHOOT:play(1)
 			end
 		end

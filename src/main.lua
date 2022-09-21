@@ -45,24 +45,10 @@ function MainMenu()
 	playdate.update = cinematic.update
 end
 
-print("testing memory leak on new game")
-
 MainMenu()
 
 --🟨 ⊙ 🔒 🎣 ✛ ⬆️ ➡️ ⬇️ ⬅️
 
--- musica diferente em cada nivel? talvez 2 ou 3 diferentes
-
---TODO voice acting
--- Its time to KILL (barulho de recarregando arma)
--- (barulho de riscando) that was easy
--- (barulho de riscando) damn, that was hard
--- its my pleasure (?)
-
 -- FIXME aparentemente, sempre que reinicia o jogo aloca mais memoria (acho que so ocorre com o malloc log ligado)
 
 -- FIXME impossibilitar de andar durante cinematicas
--- TODO adicionar espinhos no canto da tela
--- TODO musica de fim de jogo
-
--- terminei com a 360 (facil)

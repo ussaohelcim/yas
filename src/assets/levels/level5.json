@@ -31,36 +31,36 @@
 				"speed": 300
 			},
 			{
-				"enemyType": 2,
+				"enemyType": 3,
 				"enemyLife": 30,
-				"speed": 300
+				"speed": 100
 			}
 		],
 		[
 			{
 				"enemyType": 2,
-				"enemyLife": 2,
+				"enemyLife": 5,
 				"speed": 80,
 				"x": 0,
 				"y": 0
 			},
 			{
 				"enemyType": 2,
-				"enemyLife": 2,
+				"enemyLife": 5,
 				"speed": 80,
 				"x": 400,
 				"y": 0
 			},
 			{
 				"enemyType": 2,
-				"enemyLife": 2,
+				"enemyLife": 5,
 				"speed": 80,
 				"x": 0,
 				"y": 240
 			},
 			{
 				"enemyType": 2,
-				"enemyLife": 2,
+				"enemyLife": 5,
 				"speed": 80,
 				"x": 400,
 				"y": 240

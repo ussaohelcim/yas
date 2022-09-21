@@ -14,7 +14,7 @@ local remap = math.remap
 local PI = math.pi
 local TAU = math.TAU
 local isInBetween = math.isInBetween
-
+local createBullet = CreateBullet
 local tempVector = {}
 
 local playerImage = playdate.graphics.image.new("assets/images/player")
@@ -185,6 +185,17 @@ function Player()
 		self.dashCooldown = self.dashCooldown - dt
 		if dash and self.dashCooldown < 0 then
 			local x1, y1 = self.x, self.y
+
+			if self.life <= self.maxLife * 0.3 then
+				createBullet(0, self.x, self.y, 0, 100, 8, false)
+				createBullet(0, self.x, self.y, math.rad(90), 100, 8, false)
+				createBullet(0, self.x, self.y, math.rad(180), 100, 8, false)
+				createBullet(0, self.x, self.y, math.rad(-90), 100, 8, false)
+				createBullet(0, self.x, self.y, math.rad(45), 100, 8, false)
+				createBullet(0, self.x, self.y, math.rad(-45), 100, 8, false)
+				createBullet(0, self.x, self.y, math.rad(180 + 45), 100, 8, false)
+				createBullet(0, self.x, self.y, math.rad(180 - 45), 100, 8, false)
+			end
 
 			sfxDash:play(1)
 

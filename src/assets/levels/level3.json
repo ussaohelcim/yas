@@ -1,67 +1,90 @@
 {
-	"waves":[
+	"waves": [
 		[
 			{
-				"enemyType" : 1,
-				"enemyLife": 5,
+				"enemyType": 2,
+				"enemyLife": 2,
+				"speed": 80,
+				"x": 0,
+				"y": 0
+			},
+			{
+				"enemyType": 2,
+				"enemyLife": 2,
+				"speed": 80,
+				"x": 400,
+				"y": 0
+			},
+			{
+				"enemyType": 2,
+				"enemyLife": 2,
+				"speed": 80,
+				"x": 0,
+				"y": 240
+			},
+			{
+				"enemyType": 2,
+				"enemyLife": 2,
+				"speed": 80,
+				"x": 400,
+				"y": 240
+			},
+			{
+				"enemyType": 2,
+				"enemyLife": 10,
 				"speed": 50
 			},
 			{
-				"enemyType" : 1,
-				"enemyLife": 5,
-				"speed": 50
-			},
-			{
-				"enemyType" : 4,
+				"enemyType": 4,
 				"enemyLife": 8,
 				"speed": 150
 			},
 			{
-				"enemyType" : 4,
+				"enemyType": 4,
 				"enemyLife": 8,
 				"speed": 150
 			}
 		],
 		[
 			{
-				"enemyType" : 1,
+				"enemyType": 1,
 				"enemyLife": 5,
 				"speed": 50
 			},
 			{
-				"enemyType" : 1,
+				"enemyType": 1,
 				"enemyLife": 5,
 				"speed": 50
 			},
 			{
-				"enemyType" : 2,
+				"enemyType": 2,
 				"enemyLife": 5,
 				"speed": 50
 			},
 			{
-				"enemyType" : 4,
+				"enemyType": 4,
 				"enemyLife": 8,
 				"speed": 130
 			}
 		],
 		[
 			{
-				"enemyType" : 2,
-				"enemyLife": 5,
+				"enemyType": 2,
+				"enemyLife": 15,
 				"speed": 50
 			},
 			{
-				"enemyType" : 2,
-				"enemyLife": 5,
+				"enemyType": 2,
+				"enemyLife": 15,
 				"speed": 50
 			},
 			{
-				"enemyType" : 2,
-				"enemyLife": 5,
+				"enemyType": 2,
+				"enemyLife": 15,
 				"speed": 50
 			},
 			{
-				"enemyType" : 4,
+				"enemyType": 4,
 				"enemyLife": 8,
 				"speed": 200
 			}

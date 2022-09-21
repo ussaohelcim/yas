@@ -164,7 +164,6 @@ function RunOnLine(x1, y1, x2, y2, subdivisions, callback)
 	for i = 0, 1, (1 / (subdivisions - 1)) do
 		local x = lerp(i, x1, x2)
 		local y = lerp(i, y1, y2)
-		print(i)
 		callback(x, y)
 	end
 end
